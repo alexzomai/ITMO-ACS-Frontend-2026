@@ -1,7 +1,10 @@
 const SPRITE_URL = 'assets/img/sprite.svg'
 
 function icon(name) {
-  return `<svg class="icon" aria-hidden="true" focusable="false"><use href="${SPRITE_URL}#icon-${name}"></use></svg>`
+  return (
+    '<svg class="icon" aria-hidden="true" focusable="false">' +
+    `<use href="${SPRITE_URL}#icon-${name}"></use></svg>`
+  )
 }
 
 function initials(name) {
