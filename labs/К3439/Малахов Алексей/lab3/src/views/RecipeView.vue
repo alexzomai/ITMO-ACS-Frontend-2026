@@ -148,10 +148,13 @@ import LoadingState from '@/components/LoadingState.vue'
 import SaveButton from '@/components/SaveButton.vue'
 import { useAsync } from '@/composables/useAsync'
 import { useFollow } from '@/composables/useFollow'
+import { useNotify } from '@/composables/useNotify'
 import { useProfiles } from '@/composables/useProfiles'
 import BaseLayout from '@/layouts/BaseLayout.vue'
 import useAuthStore from '@/stores/auth'
 import { plural } from '@/utils/format'
+
+const { notify } = useNotify()
 
 const props = defineProps({
   id: { type: Number, required: true },
@@ -186,7 +189,7 @@ watch(
     await run(id)
     if (recipe.value) {
       document.title = `${recipe.value.title}: Вкусная лента`
-      await loadFollows()
+      await loadFollows().catch((err) => notify(err.message))
     }
   },
   { immediate: true },

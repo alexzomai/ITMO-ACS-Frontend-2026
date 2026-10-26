@@ -6,6 +6,7 @@ import { useNotify } from '@/composables/useNotify'
 import { useRequireAuth } from '@/composables/useRequireAuth'
 
 const saved = ref(new Map())
+const pending = ref(new Set())
 const loadedFor = ref(null)
 
 export function useSaved() {
@@ -29,8 +30,13 @@ export function useSaved() {
     return saved.value.has(recipeId)
   }
 
+  function isPending(recipeId) {
+    return pending.value.has(recipeId)
+  }
+
   async function toggle(recipeId) {
-    if (!requireAuth()) return
+    if (!requireAuth() || isPending(recipeId)) return
+    pending.value = new Set(pending.value).add(recipeId)
     const next = new Map(saved.value)
     try {
       if (next.has(recipeId)) {
@@ -44,6 +50,10 @@ export function useSaved() {
     } catch (error) {
       notify(error.message)
       if ([404, 409].includes(error.status)) await load(true)
+    } finally {
+      const rest = new Set(pending.value)
+      rest.delete(recipeId)
+      pending.value = rest
     }
   }
 
@@ -52,5 +62,5 @@ export function useSaved() {
     () => load(),
   )
 
-  return { saved, load, isSaved, toggle }
+  return { saved, load, isSaved, isPending, toggle }
 }

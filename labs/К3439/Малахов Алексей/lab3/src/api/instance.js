@@ -23,10 +23,10 @@ instance.interceptors.response.use(
     const auth = useAuthStore()
     if (error.response?.status === 401 && auth.token) {
       auth.logout()
-      router.push({
-        name: 'login',
-        query: { redirect: router.currentRoute.value.fullPath },
-      })
+      const current = router.currentRoute.value
+      if (current.meta.requiresAuth) {
+        router.push({ name: 'login', query: { redirect: current.fullPath } })
+      }
     }
     return Promise.reject(toApiError(error))
   },

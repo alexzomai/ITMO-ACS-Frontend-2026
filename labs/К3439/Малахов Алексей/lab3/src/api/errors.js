@@ -21,5 +21,7 @@ export function toApiError(error) {
   }
   const { status, data } = error.response
   const text = typeof data === 'string' ? data : ''
+  if (status === 401 && !MESSAGES[text])
+    return new ApiError(401, 'Сессия истекла, войдите снова')
   return new ApiError(status, MESSAGES[text] || `Ошибка сервера (${status})`)
 }

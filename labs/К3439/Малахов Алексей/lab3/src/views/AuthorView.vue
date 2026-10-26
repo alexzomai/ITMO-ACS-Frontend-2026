@@ -46,8 +46,11 @@ import LoadingState from '@/components/LoadingState.vue'
 import RecipeGrid from '@/components/RecipeGrid.vue'
 import { useAsync } from '@/composables/useAsync'
 import { useFollow } from '@/composables/useFollow'
+import { useNotify } from '@/composables/useNotify'
 import BaseLayout from '@/layouts/BaseLayout.vue'
 import { initials, plural } from '@/utils/format'
+
+const { notify } = useNotify()
 
 const props = defineProps({
   id: { type: Number, required: true },
@@ -75,7 +78,7 @@ watch(
     await run(id)
     if (data.value) {
       document.title = `${data.value.profile.name}: Вкусная лента`
-      await loadFollows()
+      await loadFollows().catch((err) => notify(err.message))
     }
   },
   { immediate: true },

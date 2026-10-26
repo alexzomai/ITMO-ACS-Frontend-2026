@@ -127,7 +127,7 @@ router.beforeEach((to) => {
 
 == Работа с API через axios
 
-Как в мануале, есть один экземпляр axios и классы для ресурсов (`RecipesApi`, `AuthApi`, `ProfilesApi`, `SocialApi`), которым экземпляр передаётся в конструкторе. Интерцепторы добавляют токен к каждому запросу и в одном месте обрабатывают ошибки: при 401 пользователь разлогинивается и попадает на вход, а ошибка сервера превращается в понятный текст:
+Как в мануале, есть один экземпляр axios и классы для ресурсов (`RecipesApi`, `AuthApi`, `ProfilesApi`, `SocialApi`), которым экземпляр передаётся в конструкторе. Интерцепторы добавляют токен к каждому запросу и в одном месте обрабатывают ошибки. Если сервер ответил 401 (токен недействителен), сессия сбрасывается. Со страницы, которой нужен вход, пользователь попадает на вход с параметром `redirect`, а открытая страница остаётся на месте с сообщением «Сессия истекла, войдите снова». Ошибка сервера превращается в понятный текст:
 
 ```js
 instance.interceptors.request.use((config) => {
@@ -142,10 +142,10 @@ instance.interceptors.response.use(
     const auth = useAuthStore()
     if (error.response?.status === 401 && auth.token) {
       auth.logout()
-      router.push({
-        name: 'login',
-        query: { redirect: router.currentRoute.value.fullPath },
-      })
+      const current = router.currentRoute.value
+      if (current.meta.requiresAuth) {
+        router.push({ name: 'login', query: { redirect: current.fullPath } })
+      }
     }
     return Promise.reject(toApiError(error))
   },
@@ -184,8 +184,8 @@ instance.interceptors.response.use(
 
 Повторяющаяся логика вынесена в функции `use...` в папке `composables/`:
 - `useAsync`: загрузка данных с флагами `loading` и `error`, ответ на устаревший запрос отбрасывается;
-- `useLike`, `useSaved`, `useFollow`: лайк, закладка и подписка с запросами к API и обработкой ответов 404 и 409;
-- `useRecipeFilters`: состояние фильтров, синхронизация с URL, запрос к API с задержкой и сортировка;
+- `useLike`, `useSaved`, `useFollow`: лайк, закладка и подписка с запросами к API, блокировкой повторного нажатия и обработкой ответов 404 и 409;
+- `useRecipeFilters`: состояние фильтров, двусторонняя синхронизация с URL (неизвестные значения из адреса отбрасываются), запрос к API с задержкой и сортировка;
 - `useProfiles`: общий справочник профилей для имён авторов;
 - `useFormValidation`: проверка форм, в том числе полей из одних пробелов, `aria-invalid` и фокус на ошибке;
 - `useRequireAuth`, `useNotify`, `useTheme`: переход на вход для гостя, всплывающие сообщения, тема.
@@ -345,17 +345,17 @@ const { liked, count, busy, toggle } = useLike(toRef(props, 'recipe'))
 
 == Проверка
 
-Сценарии проходились в Google Chrome под macOS (через Playwright) дважды: на dev-сервере (`npm start`) и на production-сборке (`npm run build`, `vite preview`). В обоих случаях прошли все 18 сценариев: данные главной из API, переходы через `router-link` без перезагрузки страницы, фильтры в URL и после перезагрузки, назад и вперёд в истории, вход с `redirect` и неверный пароль (@login), лайк, закладка, подписка и комментарий с проверкой после перезагрузки, вкладки и модальные окна кабинета, удаление рецепта и отписка, guards `requiresAuth`, `guestOnly` и `beforeEnter`, несуществующий рецепт и маршрут 404, регистрация, испорченный токен, недоступное API, темы, мобильная версия. Ошибок JavaScript не было. В production-сборке прямой заход на `/recipes/1`, `/authors/2` и `/profile` открывает приложение (отвечает `index.html`).
+Сценарии проходились в Google Chrome под macOS (через Playwright) дважды: на dev-сервере (`npm start`) и на production-сборке (`npm run build`, `vite preview`). В обоих случаях прошли все 20 сценариев: данные главной из API, переходы через `router-link` без перезагрузки страницы, фильтры в URL и после перезагрузки, сброс фильтров ссылкой в шапке и некорректные значения в адресе, назад и вперёд в истории, вход с `redirect` и неверный пароль (@login), лайк, закладка, подписка и комментарий с проверкой после перезагрузки, вкладки и модальные окна кабинета, удаление рецепта двойным кликом (уходит один запрос) и отписка, guards `requiresAuth`, `guestOnly` и `beforeEnter`, несуществующий рецепт и маршрут 404, регистрация, испорченный токен на открытой странице и в кабинете, недоступное API, темы, мобильная версия. Ошибок JavaScript не было. В production-сборке прямой заход на `/recipes/1`, `/authors/2` и `/profile` открывает приложение (отвечает `index.html`).
 
 Lighthouse (раздел Accessibility) на production-сборке в светлой теме даёт 100 баллов на главной, в поиске, на странице рецепта, на странице кулинара и на входе (@lh). `npx eslint .`, `npx oxlint .` и `npx prettier --check src/` проходят без замечаний. Сборка `npm run build`:
 
 #text(size: 9pt)[```
-dist/assets/SearchView-BddTn1Xi.js                   6.17 kB │ gzip:  2.73 kB
-dist/assets/RecipeView-o_glTtSs.js                   7.23 kB │ gzip:  3.34 kB
-dist/assets/ProfileView-Dk45oz8t.js                 13.86 kB │ gzip:  4.95 kB
+dist/assets/SearchView-DluYKngO.js                   6.35 kB │ gzip:  2.83 kB
+dist/assets/RecipeView-C-neGUc2.js                   7.27 kB │ gzip:  3.36 kB
+dist/assets/ProfileView-N6_w5Qf8.js                 14.26 kB │ gzip:  5.06 kB
 dist/assets/_plugin-vue_export-helper-BaxhD9_W.js  127.34 kB │ gzip: 49.83 kB
-dist/assets/index-DyhLkcgM.js                      256.71 kB │ gzip: 88.17 kB
-✓ built in 193ms
+dist/assets/index-Dncc1u98.js                      257.02 kB │ gzip: 88.26 kB
+✓ built in 214ms
 ```]
 
 #figure(

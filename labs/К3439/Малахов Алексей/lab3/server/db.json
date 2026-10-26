@@ -3,37 +3,37 @@
     {
       "id": 1,
       "email": "anna@example.com",
-      "password": "$2a$10$kX2drieAiq39VxRYFxraJ.pGQviqdUKCr/dND6vdl3uDJghcVm/nW",
+      "password": "$2a$10$recipesdemosaltrecipeukRJiB2tc3/fWHEyWO/IojCGT7jMJRmm",
       "name": "Анна Морозова"
     },
     {
       "id": 2,
       "email": "igor@example.com",
-      "password": "$2a$10$kX2drieAiq39VxRYFxraJ.pGQviqdUKCr/dND6vdl3uDJghcVm/nW",
+      "password": "$2a$10$recipesdemosaltrecipeukRJiB2tc3/fWHEyWO/IojCGT7jMJRmm",
       "name": "Игорь Ветров"
     },
     {
       "id": 3,
       "email": "maria@example.com",
-      "password": "$2a$10$kX2drieAiq39VxRYFxraJ.pGQviqdUKCr/dND6vdl3uDJghcVm/nW",
+      "password": "$2a$10$recipesdemosaltrecipeukRJiB2tc3/fWHEyWO/IojCGT7jMJRmm",
       "name": "Мария Ким"
     },
     {
       "id": 4,
       "email": "alex@example.com",
-      "password": "$2a$10$kX2drieAiq39VxRYFxraJ.pGQviqdUKCr/dND6vdl3uDJghcVm/nW",
+      "password": "$2a$10$recipesdemosaltrecipeukRJiB2tc3/fWHEyWO/IojCGT7jMJRmm",
       "name": "Алексей"
     },
     {
       "id": 5,
       "email": "olga@example.com",
-      "password": "$2a$10$kX2drieAiq39VxRYFxraJ.pGQviqdUKCr/dND6vdl3uDJghcVm/nW",
+      "password": "$2a$10$recipesdemosaltrecipeukRJiB2tc3/fWHEyWO/IojCGT7jMJRmm",
       "name": "Ольга Лис"
     },
     {
       "id": 6,
       "email": "dmitry@example.com",
-      "password": "$2a$10$kX2drieAiq39VxRYFxraJ.pGQviqdUKCr/dND6vdl3uDJghcVm/nW",
+      "password": "$2a$10$recipesdemosaltrecipeukRJiB2tc3/fWHEyWO/IojCGT7jMJRmm",
       "name": "Дмитрий Орлов"
     }
   ],

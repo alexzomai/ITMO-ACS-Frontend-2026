@@ -3,7 +3,7 @@ const path = require('path')
 const bcrypt = require('bcryptjs')
 const { users, PASSWORD, recipes, comments, likes, follows } = require('./seed-data.cjs')
 
-const hash = bcrypt.hashSync(PASSWORD, 10)
+const hash = bcrypt.hashSync(PASSWORD, '$2a$10$recipesdemosaltrecipeu')
 
 const db = {
   users: users.map(({ id, email, name }) => ({ id, email, password: hash, name })),

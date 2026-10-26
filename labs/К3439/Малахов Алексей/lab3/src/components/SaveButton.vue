@@ -3,6 +3,7 @@
     type="button"
     class="btn btn-outline-secondary btn-save"
     :class="{ active: saved }"
+    :disabled="isPending(recipeId)"
     :aria-pressed="String(saved)"
     @click="toggle(recipeId)"
   >
@@ -20,6 +21,6 @@ const props = defineProps({
   recipeId: { type: Number, required: true },
 })
 
-const { isSaved, toggle } = useSaved()
+const { isSaved, isPending, toggle } = useSaved()
 const saved = computed(() => isSaved(props.recipeId))
 </script>

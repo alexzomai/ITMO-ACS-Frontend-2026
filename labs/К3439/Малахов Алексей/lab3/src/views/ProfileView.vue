@@ -82,6 +82,7 @@
               type="button"
               class="btn btn-sm btn-outline-danger ms-auto"
               :aria-label="`Удалить рецепт «${recipe.title}»`"
+              :disabled="busy.has(`recipe-${recipe.id}`)"
               @click="removeRecipe(recipe)"
             >
               Удалить
@@ -111,6 +112,7 @@
                 type="button"
                 class="btn btn-sm btn-outline-secondary btn-unfollow"
                 :aria-label="`Отписаться от ${nameOf(follow.authorId)}`"
+                :disabled="busy.has(`follow-${follow.id}`)"
                 @click="unfollow(follow)"
               >
                 Отписаться
@@ -167,6 +169,7 @@ const profileModal = ref(null)
 const recipeModal = ref(null)
 const savedRecipes = ref([])
 const savedLoading = ref(false)
+const busy = ref(new Set())
 
 const { data, loading, error, run } = useAsync(async () => {
   const [profile, published, following] = await Promise.all([
@@ -189,24 +192,45 @@ async function refreshSaved() {
   }
 }
 
-async function removeRecipe(recipe) {
+async function withBusy(key, action) {
+  if (busy.value.has(key)) return
+  busy.value = new Set(busy.value).add(key)
   try {
-    await recipesApi.remove(recipe.id)
-    data.value.published = data.value.published.filter((item) => item.id !== recipe.id)
-    await loadSaved(true)
-  } catch (err) {
-    notify(err.message)
+    await action()
+  } finally {
+    const rest = new Set(busy.value)
+    rest.delete(key)
+    busy.value = rest
   }
 }
 
-async function unfollow(follow) {
-  try {
-    await followsApi.remove(follow.id)
-  } catch (err) {
-    notify(err.message)
-    if (err.status !== 404) return
-  }
-  data.value.following = data.value.following.filter((item) => item.id !== follow.id)
+function removeRecipe(recipe) {
+  return withBusy(`recipe-${recipe.id}`, async () => {
+    try {
+      await recipesApi.remove(recipe.id)
+    } catch (err) {
+      if (err.status !== 404) {
+        notify(err.message)
+        return
+      }
+    }
+    data.value.published = data.value.published.filter((item) => item.id !== recipe.id)
+    await loadSaved(true)
+  })
+}
+
+function unfollow(follow) {
+  return withBusy(`follow-${follow.id}`, async () => {
+    try {
+      await followsApi.remove(follow.id)
+    } catch (err) {
+      if (err.status !== 404) {
+        notify(err.message)
+        return
+      }
+    }
+    data.value.following = data.value.following.filter((item) => item.id !== follow.id)
+  })
 }
 
 function onProfileSaved(profile) {
@@ -218,7 +242,11 @@ function onProfileSaved(profile) {
 watch(saved, refreshSaved)
 
 onMounted(async () => {
-  await Promise.all([run(), loadSaved()])
-  refreshSaved()
+  try {
+    await Promise.all([run(), loadSaved()])
+    await refreshSaved()
+  } catch (err) {
+    notify(err.message)
+  }
 })
 </script>

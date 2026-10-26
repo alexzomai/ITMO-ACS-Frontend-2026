@@ -8,6 +8,7 @@
 
 <script setup>
 import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
 import AppFooter from '@/components/AppFooter.vue'
 import AppHeader from '@/components/AppHeader.vue'
@@ -19,12 +20,14 @@ import { useSaved } from '@/composables/useSaved'
 const { load: loadProfiles } = useProfiles()
 const { load: loadSaved } = useSaved()
 const { notify } = useNotify()
+const router = useRouter()
 
 function focusMain() {
   document.getElementById('main')?.focus()
 }
 
-onMounted(() => {
+onMounted(async () => {
+  await router.isReady()
   Promise.all([loadProfiles(), loadSaved()]).catch((error) => notify(error.message))
 })
 </script>
