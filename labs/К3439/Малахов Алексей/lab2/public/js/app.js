@@ -1,19 +1,7 @@
-const ICONS = {
-  logo: '<path d="M7 17h10v4H7z"/><path d="M7 17v-4.5A4 4 0 0 1 8 4.6a5 5 0 0 1 8 0 4 4 0 0 1 1 7.9V17"/>',
-  heart: '<path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7a4.3 4.3 0 0 1 7.5 2.8C19.5 15.4 12 20 12 20z"/>',
-  bookmark: '<path d="M6 3h12v18l-6-4.5L6 21z"/>',
-  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
-  servings: '<circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M16 5a3 3 0 0 1 0 6"/><path d="M18 14.5c1.8.8 3 2.9 3 5.5"/>',
-  search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>',
-  comment: '<path d="M4 5h16v11H9l-5 4z"/>',
-  user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
-  plus: '<path d="M12 5v14M5 12h14"/>',
-  moon: '<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>',
-  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
-}
+const SPRITE_URL = 'assets/img/sprite.svg'
 
 function icon(name) {
-  return `<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name]}</svg>`
+  return `<svg class="icon" aria-hidden="true" focusable="false"><use href="${SPRITE_URL}#icon-${name}"></use></svg>`
 }
 
 function initials(name) {
