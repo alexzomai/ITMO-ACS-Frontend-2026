@@ -7,6 +7,7 @@ const ERROR_TEXT = {
   'Email format is invalid': 'Некорректный email',
   'Password is too short': 'Пароль слишком короткий',
   'jwt expired': 'Сессия истекла, войдите снова',
+  'Already exists': 'Уже добавлено',
 }
 
 class ApiError extends Error {
@@ -74,16 +75,24 @@ async function api(path, { method = 'GET', body } = {}) {
 
   let response
   try {
-    response = await fetch(API_URL + path, { method, headers, body: body && JSON.stringify(body) })
+    response = await fetch(API_URL + path, {
+      method,
+      headers,
+      body: body && JSON.stringify(body),
+    })
   } catch {
     throw new ApiError(0, 'Сервер недоступен. Запустите API командой npm start.')
   }
 
   const data = await response.json().catch(() => null)
   if (!response.ok) {
-    if (response.status === 401 && token) logout()
+    if (response.status === 401 && token) {
+      logout()
+      location.href = loginUrl()
+    }
     const text = typeof data === 'string' ? data : ''
-    throw new ApiError(response.status, ERROR_TEXT[text] || `Ошибка сервера (${response.status})`)
+    const message = ERROR_TEXT[text] || `Ошибка сервера (${response.status})`
+    throw new ApiError(response.status, message)
   }
   return data
 }

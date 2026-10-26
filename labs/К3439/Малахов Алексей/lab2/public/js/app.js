@@ -25,9 +25,12 @@ function plural(n, forms) {
 }
 
 function escapeHtml(text) {
-  const div = document.createElement('div')
-  div.textContent = text
-  return div.innerHTML
+  return String(text ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
 }
 
 const TEXT_FIELDS = 'input[type=text], input[type=password], textarea'
@@ -170,6 +173,23 @@ function renderAuthNav() {
   })
 }
 
+function updateLikeButtons(recipe) {
+  document.querySelectorAll(`.btn-like[data-id="${recipe.id}"]`).forEach((item) => {
+    item.classList.toggle('active', Boolean(myLike(recipe)))
+    item.setAttribute('aria-pressed', String(Boolean(myLike(recipe))))
+    item.setAttribute('aria-label', `Нравится «${recipe.title}», отметок: ${recipe.likes.length}`)
+    item.querySelector('.like-count').textContent = recipe.likes.length
+  })
+}
+
+function updateSaveButtons(id) {
+  document.querySelectorAll(`.btn-save[data-id="${id}"]`).forEach((item) => {
+    item.classList.toggle('active', state.saved.has(id))
+    item.setAttribute('aria-pressed', String(state.saved.has(id)))
+    item.querySelector('.save-label').textContent = state.saved.has(id) ? 'Сохранён' : 'Сохранить'
+  })
+}
+
 async function toggleLike(button) {
   const recipe = state.recipes.get(Number(button.dataset.id))
   const user = currentUser()
@@ -186,14 +206,13 @@ async function toggleLike(button) {
     } else {
       recipe.likes.push(await api('/likes', { method: 'POST', body: { recipeId: recipe.id, userId: user.id } }))
     }
-    document.querySelectorAll(`.btn-like[data-id="${recipe.id}"]`).forEach((item) => {
-      item.classList.toggle('active', Boolean(myLike(recipe)))
-      item.setAttribute('aria-pressed', String(Boolean(myLike(recipe))))
-      item.setAttribute('aria-label', `Нравится «${recipe.title}», отметок: ${recipe.likes.length}`)
-      item.querySelector('.like-count').textContent = recipe.likes.length
-    })
+    updateLikeButtons(recipe)
   } catch (error) {
     showToast(error.message)
+    if ([404, 409].includes(error.status)) {
+      recipe.likes = await api(`/likes?${query({ recipeId: recipe.id })}`)
+      updateLikeButtons(recipe)
+    }
   } finally {
     button.disabled = false
   }
@@ -215,14 +234,16 @@ async function toggleSave(button) {
       const item = await api('/saved', { method: 'POST', body: { recipeId: id, userId: user.id } })
       state.saved.set(id, item.id)
     }
-    document.querySelectorAll(`.btn-save[data-id="${id}"]`).forEach((item) => {
-      item.classList.toggle('active', state.saved.has(id))
-      item.setAttribute('aria-pressed', String(state.saved.has(id)))
-      item.querySelector('.save-label').textContent = state.saved.has(id) ? 'Сохранён' : 'Сохранить'
-    })
+    updateSaveButtons(id)
     document.dispatchEvent(new CustomEvent('saved-changed'))
   } catch (error) {
     showToast(error.message)
+    if ([404, 409].includes(error.status)) {
+      const [item] = await api(`/saved?${query({ userId: user.id, recipeId: id })}`)
+      if (item) state.saved.set(id, item.id)
+      else state.saved.delete(id)
+      updateSaveButtons(id)
+    }
   } finally {
     button.disabled = false
   }

@@ -41,6 +41,10 @@ async function toggleFollow() {
     renderFollow()
   } catch (error) {
     showToast(error.message)
+    if ([404, 409].includes(error.status)) {
+      follows = await api(`/follows?${query({ authorId: recipe.userId })}`)
+      renderFollow()
+    }
   } finally {
     followButton.disabled = false
   }

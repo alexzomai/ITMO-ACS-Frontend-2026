@@ -84,6 +84,11 @@ followingList.addEventListener('click', async (event) => {
     renderProfile()
   } catch (error) {
     showToast(error.message)
+    if (error.status === 404) {
+      following = await api(`/follows?${query({ userId: user.id })}`)
+      renderFollowing()
+      renderProfile()
+    }
     button.disabled = false
   }
 })
