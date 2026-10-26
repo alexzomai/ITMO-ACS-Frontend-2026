@@ -1,13 +1,70 @@
 :root {
   --color-primary: #b3452f;
   --color-primary-dark: #943823;
+  --color-on-primary: #ffffff;
   --color-accent: #f2a65a;
   --color-bg: #fffaf5;
   --color-surface: #ffffff;
   --color-text: #2d2a26;
   --color-muted: #6f6a64;
   --color-border: #eadfd3;
+  --color-hero-from: #fde3cf;
+  --color-hero-to: #fbd3c5;
+  --color-badge-bg: #fde3cf;
+  --color-badge-text: #943823;
+  --color-badge-alt-bg: #eef3e6;
+  --color-badge-alt-text: #4d6b2f;
+  --color-avatar-bg: #fde3cf;
+  --color-avatar-text: #8a3a22;
+  --color-chip-bg: #f8f9fa;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   --radius: 14px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --color-primary: #f08a70;
+    --color-primary-dark: #f29a82;
+    --color-on-primary: #1b1714;
+    --color-accent: #c77a36;
+    --color-bg: #1b1714;
+    --color-surface: #26211d;
+    --color-text: #f3ede7;
+    --color-muted: #b8aea4;
+    --color-border: #3d3530;
+    --color-hero-from: #3a2620;
+    --color-hero-to: #2e221d;
+    --color-badge-bg: #4a2a20;
+    --color-badge-text: #ffc9b3;
+    --color-badge-alt-bg: #2f3d22;
+    --color-badge-alt-text: #cfe6b5;
+    --color-avatar-bg: #5a2e20;
+    --color-avatar-text: #ffd2bd;
+    --color-chip-bg: #2f2924;
+    --shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  }
+}
+
+:root[data-theme='dark'] {
+  --color-primary: #f08a70;
+  --color-primary-dark: #f29a82;
+  --color-on-primary: #1b1714;
+  --color-accent: #c77a36;
+  --color-bg: #1b1714;
+  --color-surface: #26211d;
+  --color-text: #f3ede7;
+  --color-muted: #b8aea4;
+  --color-border: #3d3530;
+  --color-hero-from: #3a2620;
+  --color-hero-to: #2e221d;
+  --color-badge-bg: #4a2a20;
+  --color-badge-text: #ffc9b3;
+  --color-badge-alt-bg: #2f3d22;
+  --color-badge-alt-text: #cfe6b5;
+  --color-avatar-bg: #5a2e20;
+  --color-avatar-text: #ffd2bd;
+  --color-chip-bg: #2f2924;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
 }
 
 body {
@@ -24,8 +81,12 @@ main {
 }
 
 .btn-primary {
+  --bs-btn-color: var(--color-on-primary);
   --bs-btn-bg: var(--color-primary);
   --bs-btn-border-color: var(--color-primary);
+  --bs-btn-hover-color: var(--color-on-primary);
+  --bs-btn-active-color: var(--color-on-primary);
+  --bs-btn-disabled-color: var(--color-on-primary);
   --bs-btn-hover-bg: var(--color-primary-dark);
   --bs-btn-hover-border-color: var(--color-primary-dark);
   --bs-btn-active-bg: var(--color-primary-dark);
@@ -37,8 +98,10 @@ main {
 .btn-outline-primary {
   --bs-btn-color: var(--color-primary);
   --bs-btn-border-color: var(--color-primary);
+  --bs-btn-hover-color: var(--color-on-primary);
   --bs-btn-hover-bg: var(--color-primary);
   --bs-btn-hover-border-color: var(--color-primary);
+  --bs-btn-active-color: var(--color-on-primary);
   --bs-btn-active-bg: var(--color-primary-dark);
   --bs-btn-active-border-color: var(--color-primary-dark);
 }
@@ -82,7 +145,7 @@ a {
 }
 
 .hero {
-  background: linear-gradient(135deg, #fde3cf 0%, #fbd3c5 100%);
+  background: linear-gradient(135deg, var(--color-hero-from) 0%, var(--color-hero-to) 100%);
   border-radius: var(--radius);
   padding: 3rem 2rem;
 }
@@ -101,7 +164,7 @@ a {
 }
 
 .recipe-card:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow);
   transform: translateY(-2px);
 }
 
@@ -152,20 +215,30 @@ a {
 }
 
 .badge-type {
-  background-color: #fde3cf;
-  color: var(--color-primary-dark);
+  background-color: var(--color-badge-bg);
+  color: var(--color-badge-text);
   font-weight: 500;
 }
 
 .badge-difficulty {
-  background-color: #eef3e6;
-  color: #4d6b2f;
+  background-color: var(--color-badge-alt-bg);
+  color: var(--color-badge-alt-text);
   font-weight: 500;
+}
+
+.btn-like,
+.btn-save,
+.btn-unfollow {
+  --bs-btn-color: var(--color-muted);
+  --bs-btn-border-color: var(--color-muted);
+  --bs-btn-hover-color: var(--color-on-primary);
+  --bs-btn-hover-bg: var(--color-primary);
+  --bs-btn-hover-border-color: var(--color-primary);
 }
 
 .btn-like.active,
 .btn-save.active {
-  color: #fff;
+  color: var(--color-on-primary);
   background-color: var(--color-primary);
   border-color: var(--color-primary);
 }
@@ -181,8 +254,8 @@ a {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background-color: #fde3cf;
-  color: #8a3a22;
+  background-color: var(--color-avatar-bg);
+  color: var(--color-avatar-text);
   font-weight: 700;
   display: inline-flex;
   align-items: center;
@@ -233,7 +306,7 @@ a {
   height: 2.2rem;
   border-radius: 50%;
   background-color: var(--color-primary);
-  color: #fff;
+  color: var(--color-on-primary);
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -301,7 +374,7 @@ a {
   z-index: 2000;
   padding: 0.5rem 1rem;
   background-color: var(--color-primary);
-  color: #fff;
+  color: var(--color-on-primary);
   border-radius: 0 0 var(--radius) var(--radius);
 }
 
@@ -327,4 +400,58 @@ button:focus-visible,
   .recipe-card:hover {
     transform: none;
   }
+}
+
+.btn-chip {
+  background-color: var(--color-chip-bg);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.btn-chip:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.form-control,
+.form-select {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+.form-control:focus,
+.form-select:focus {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
+.form-control::placeholder {
+  color: var(--color-muted);
+}
+
+.modal-content,
+.dropdown-menu {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
+.nav-tabs {
+  --bs-nav-tabs-link-active-bg: var(--color-surface);
+  --bs-nav-tabs-border-color: var(--color-border);
+  --bs-nav-tabs-link-active-border-color: var(--color-border) var(--color-border) var(--color-surface);
+}
+
+.breadcrumb-item.active {
+  color: var(--color-muted);
+}
+
+.theme-toggle {
+  --bs-btn-color: var(--color-text);
+  --bs-btn-border-color: var(--color-border);
+  --bs-btn-hover-color: var(--color-primary);
+  --bs-btn-hover-border-color: var(--color-primary);
+  --bs-btn-hover-bg: transparent;
+  --bs-btn-active-color: var(--color-primary);
+  --bs-btn-active-bg: transparent;
 }

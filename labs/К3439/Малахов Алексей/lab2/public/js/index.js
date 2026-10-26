@@ -2,7 +2,7 @@ const popularList = document.getElementById('popularRecipes')
 const authorsList = document.getElementById('authorsList')
 
 document.getElementById('dishTypes').innerHTML = DISH_TYPES.map(
-  (type) => `<a class="btn btn-light border" href="search.html?type=${encodeURIComponent(type)}">${type}</a>`
+  (type) => `<a class="btn btn-chip" href="search.html?type=${encodeURIComponent(type)}">${type}</a>`
 ).join('')
 
 async function loadHome() {
