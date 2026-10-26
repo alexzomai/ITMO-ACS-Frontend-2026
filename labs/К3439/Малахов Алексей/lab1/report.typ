@@ -17,7 +17,7 @@
   v(0.5cm)
 }
 
-#show raw.where(block: true): set text(size: 10pt)
+#show raw.where(block: true): set text(size: 9pt)
 #show raw.where(block: true): it => block(breakable: false, it)
 #show figure.caption: set text(size: 12pt)
 
@@ -110,7 +110,8 @@
 const found = RECIPES.filter((recipe) => {
   if (query && !recipe.title.toLowerCase().includes(query)) return false
   if (type && recipe.type !== type) return false
-  if (difficulties.length && !difficulties.includes(recipe.difficulty)) return false
+  if (difficulties.length && !difficulties.includes(recipe.difficulty))
+    return false
   if (ingredients.some((item) => !recipe.tags.includes(item))) return false
   if (maxTime && recipe.time > maxTime) return false
   return true
@@ -147,22 +148,32 @@ function toggleStored(key, id) {
 Кнопки лайка и сохранения обрабатываются делегированием: один обработчик `click` на `document` ловит нажатия по `.btn-like` и `.btn-save` на всех страницах, в том числе по карточкам, созданным позже.
 
 #figure(
-  image("report-assets/04-recipe.png", height: 17cm),
+  image("report-assets/04-recipe.png", height: 13.5cm),
   caption: [Страница рецепта после лайка, подписки и нового комментария],
 ) <recipe>
 
 == Личный кабинет и модальные окна
 
-В личном кабинете три вкладки Bootstrap (`nav-tabs`): мои публикации, сохранённые рецепты и подписки. Через модальные окна можно отредактировать профиль и добавить новый рецепт (@validation). Формы проверяются встроенной HTML-валидацией (`required`, `minlength`, `min`/`max`), а стили ошибок даёт класс `was-validated` Bootstrap:
+В личном кабинете три вкладки Bootstrap (`nav-tabs`): мои публикации, сохранённые рецепты и подписки. Через модальные окна можно отредактировать профиль и добавить новый рецепт (@validation). Формы проверяются встроенной HTML-валидацией (`required`, `minlength`, `min`/`max`), а стили ошибок даёт класс `was-validated` Bootstrap. Встроенная проверка считает строку из пробелов заполненной, поэтому перед ней текстовые поля проверяются ещё и после `trim()`:
 
 ```js
-recipeForm.addEventListener('submit', (event) => {
-  event.preventDefault()
-  recipeForm.classList.add('was-validated')
-  if (!recipeForm.checkValidity()) return
-  // сохранение рецепта и закрытие окна
-})
+const TEXT_FIELDS = 'input[type=text], input[type=password], textarea'
+
+function checkBlank(field) {
+  if (field.dataset.noTrim !== undefined) return
+  const value = field.type === 'password' ? field.value : field.value.trim()
+  const blank = field.required && !field.value.trim()
+  field.setCustomValidity(blank || value.length < field.minLength ? 'empty' : '')
+}
+
+function validateForm(form) {
+  form.querySelectorAll(TEXT_FIELDS).forEach(checkBlank)
+  form.classList.add('was-validated')
+  return form.checkValidity()
+}
 ```
+
+Эта функция используется во всех формах сайта: вход, регистрация, комментарий, профиль, новый рецепт.
 
 Новый рецепт попадает в «Мои публикации» (@profile) и открывается на странице рецепта. Пока сервера нет, он сохраняется в `localStorage`.
 

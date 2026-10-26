@@ -57,8 +57,7 @@ document.getElementById('editProfileModal').addEventListener('show.bs.modal', ()
 
 editForm.addEventListener('submit', (event) => {
   event.preventDefault()
-  editForm.classList.add('was-validated')
-  if (!editForm.checkValidity()) return
+  if (!validateForm(editForm)) return
 
   const profile = {
     name: editForm.name.value.trim(),
@@ -84,8 +83,7 @@ function lines(text) {
 
 recipeForm.addEventListener('submit', (event) => {
   event.preventDefault()
-  recipeForm.classList.add('was-validated')
-  if (!recipeForm.checkValidity()) return
+  if (!validateForm(recipeForm)) return
 
   const ingredients = lines(recipeForm.ingredients.value).map((line) => {
     const [name, amount = ''] = line.split(/\s+-\s+/)
@@ -103,7 +101,14 @@ recipeForm.addEventListener('submit', (event) => {
     authorId: CURRENT_USER.id,
     likes: 0,
     description: recipeForm.description.value.trim(),
-    tags: INGREDIENTS.filter((tag) => ingredients.some((item) => item.name.toLowerCase().includes(tag.toLowerCase()))),
+    tags: INGREDIENTS.filter((tag) =>
+      ingredients.some((item) =>
+        item.name
+          .toLowerCase()
+          .split(/[^а-яё]+/)
+          .some((word) => INGREDIENT_PATTERNS[tag].test(word))
+      )
+    ),
     ingredients,
     steps: lines(recipeForm.steps.value),
     video: null,

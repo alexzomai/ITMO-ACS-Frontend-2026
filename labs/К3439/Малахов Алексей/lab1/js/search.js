@@ -45,7 +45,7 @@ function applyFilters() {
     return true
   })
 
-  if (sortSelect.value === 'popular') found.sort((a, b) => b.likes - a.likes)
+  if (sortSelect.value === 'popular') found.sort((a, b) => likesCount(b) - likesCount(a))
   if (sortSelect.value === 'fast') found.sort((a, b) => a.time - b.time)
   if (sortSelect.value === 'title') found.sort((a, b) => a.title.localeCompare(b.title, 'ru'))
 

@@ -29,9 +29,9 @@ function renderComments() {
       const author = findAuthor(comment.authorId)
       return `
         <li class="d-flex gap-3">
-          <span class="avatar">${initials(author.name)}</span>
+          <span class="avatar">${escapeHtml(initials(author.name))}</span>
           <div>
-            <div class="fw-medium">${author.name} <span class="text-muted small fw-normal">${new Date(comment.date).toLocaleDateString('ru-RU')}</span></div>
+            <div class="fw-medium">${escapeHtml(author.name)} <span class="text-muted small fw-normal">${new Date(comment.date).toLocaleDateString('ru-RU')}</span></div>
             <p class="mb-0">${escapeHtml(comment.text)}</p>
           </div>
         </li>
@@ -61,7 +61,7 @@ if (!recipe) {
 
   document.getElementById('authorAvatar').textContent = initials(author.name)
   document.getElementById('authorLink').textContent = author.name
-  document.getElementById('authorLink').href = `author.html?id=${author.id}`
+  document.getElementById('authorLink').href = author.id === CURRENT_USER.id ? 'profile.html' : `author.html?id=${author.id}`
 
   const followButton = document.getElementById('followButton')
   if (author.id === CURRENT_USER.id) {
@@ -114,8 +114,7 @@ if (!recipe) {
   const commentForm = document.getElementById('commentForm')
   commentForm.addEventListener('submit', (event) => {
     event.preventDefault()
-    commentForm.classList.add('was-validated')
-    if (!commentForm.checkValidity()) return
+    if (!validateForm(commentForm)) return
 
     const comments = getStored('comments')
     comments.push({

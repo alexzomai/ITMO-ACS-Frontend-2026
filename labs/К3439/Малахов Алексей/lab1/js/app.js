@@ -61,6 +61,21 @@ function escapeHtml(text) {
   return div.innerHTML
 }
 
+const TEXT_FIELDS = 'input[type=text], input[type=password], textarea'
+
+function checkBlank(field) {
+  if (field.dataset.noTrim !== undefined) return
+  const value = field.type === 'password' ? field.value : field.value.trim()
+  const blank = field.required && !field.value.trim()
+  field.setCustomValidity(blank || value.length < field.minLength ? 'empty' : '')
+}
+
+function validateForm(form) {
+  form.querySelectorAll(TEXT_FIELDS).forEach(checkBlank)
+  form.classList.add('was-validated')
+  return form.checkValidity()
+}
+
 function likesCount(recipe) {
   return recipe.likes + (getStored('likedRecipes').includes(recipe.id) ? 1 : 0)
 }
@@ -72,16 +87,16 @@ function recipeCard(recipe) {
 
   return `
     <article class="recipe-card card">
-      <img src="${recipe.image}" class="recipe-card__img" alt="${recipe.title}" loading="lazy">
+      <img src="${recipe.image}" class="recipe-card__img" alt="${escapeHtml(recipe.title)}" loading="lazy">
       <div class="card-body d-flex flex-column gap-2">
         <div class="d-flex flex-wrap gap-2">
           <span class="badge badge-type">${recipe.type}</span>
           <span class="badge badge-difficulty">${recipe.difficulty}</span>
         </div>
         <h3 class="recipe-card__title mb-0">
-          <a href="recipe.html?id=${recipe.id}">${recipe.title}</a>
+          <a href="recipe.html?id=${recipe.id}">${escapeHtml(recipe.title)}</a>
         </h3>
-        <p class="text-muted small mb-0">${author.name}</p>
+        <p class="text-muted small mb-0">${escapeHtml(author.name)}</p>
         <div class="meta">
           <span>${icon('clock')} ${recipe.time} мин</span>
           <span>${icon('servings')} ${recipe.servings} порц.</span>
@@ -125,6 +140,10 @@ try {
 } catch {}
 
 RECIPES.push(...getStored('userRecipes'))
+
+document.addEventListener('input', (event) => {
+  if (event.target.matches(TEXT_FIELDS)) checkBlank(event.target)
+})
 
 document.addEventListener('click', (event) => {
   const likeButton = event.target.closest('.btn-like')

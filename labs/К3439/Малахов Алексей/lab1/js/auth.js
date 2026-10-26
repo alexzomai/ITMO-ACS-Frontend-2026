@@ -10,8 +10,7 @@ function showAlert(type, text) {
 if (loginForm) {
   loginForm.addEventListener('submit', (event) => {
     event.preventDefault()
-    loginForm.classList.add('was-validated')
-    if (!loginForm.checkValidity()) return
+    if (!validateForm(loginForm)) return
 
     showAlert('success', 'Форма заполнена верно. Переходим в личный кабинет...')
     setTimeout(() => (location.href = 'profile.html'), 1000)
@@ -32,8 +31,7 @@ if (registerForm) {
   registerForm.addEventListener('submit', (event) => {
     event.preventDefault()
     checkRepeat()
-    registerForm.classList.add('was-validated')
-    if (!registerForm.checkValidity()) return
+    if (!validateForm(registerForm)) return
 
     showAlert('success', 'Аккаунт создан. Переходим в личный кабинет...')
     setTimeout(() => (location.href = 'profile.html'), 1000)
