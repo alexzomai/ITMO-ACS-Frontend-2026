@@ -23,7 +23,7 @@ async function loadHome() {
         return `
           <div class="col-12 col-md-4">
             <a class="panel d-flex gap-3 align-items-center text-decoration-none text-reset h-100" href="author.html?id=${author.id}">
-              <span class="avatar">${escapeHtml(initials(author.name))}</span>
+              <span class="avatar" aria-hidden="true">${escapeHtml(initials(author.name))}</span>
               <span>
                 <span class="d-block fw-medium">${escapeHtml(author.name)}</span>
                 <span class="d-block text-muted small">${plural(count, ['рецепт', 'рецепта', 'рецептов'])} · ${plural(followers, ['подписчик', 'подписчика', 'подписчиков'])}</span>

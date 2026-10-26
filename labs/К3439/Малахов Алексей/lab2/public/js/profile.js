@@ -24,7 +24,7 @@ function renderPublished() {
   publishedList.querySelectorAll('.card-actions').forEach((actions, index) => {
     actions.insertAdjacentHTML(
       'beforeend',
-      `<button type="button" class="btn btn-sm btn-outline-danger ms-auto btn-delete" data-id="${published[index].id}">Удалить</button>`
+      `<button type="button" class="btn btn-sm btn-outline-danger ms-auto btn-delete" data-id="${published[index].id}" aria-label="Удалить рецепт «${escapeHtml(published[index].title)}»">Удалить</button>`
     )
   })
 }
@@ -36,9 +36,9 @@ function renderFollowing() {
           (follow) => `
             <div class="col-12 col-md-6 col-lg-4">
               <div class="panel d-flex align-items-center gap-3 h-100">
-                <span class="avatar">${escapeHtml(initials(authorName(follow.authorId)))}</span>
+                <span class="avatar" aria-hidden="true">${escapeHtml(initials(authorName(follow.authorId)))}</span>
                 <a class="flex-grow-1 text-reset fw-medium" href="author.html?id=${follow.authorId}">${escapeHtml(authorName(follow.authorId))}</a>
-                <button type="button" class="btn btn-sm btn-outline-secondary btn-unfollow" data-id="${follow.id}">Отписаться</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary btn-unfollow" data-id="${follow.id}" aria-label="Отписаться от ${escapeHtml(authorName(follow.authorId))}">Отписаться</button>
               </div>
             </div>
           `

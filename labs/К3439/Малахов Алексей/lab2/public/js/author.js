@@ -10,6 +10,7 @@ function renderFollow() {
   followButton.textContent = followed ? 'Вы подписаны' : 'Подписаться'
   followButton.classList.toggle('btn-primary', !followed)
   followButton.classList.toggle('btn-outline-primary', Boolean(followed))
+  followButton.setAttribute('aria-pressed', String(Boolean(followed)))
   const city = author.city ? ` · ${author.city}` : ''
   document.getElementById('authorMeta').textContent = `@${author.username}${city} · ${plural(follows.length, ['подписчик', 'подписчика', 'подписчиков'])} · ${plural(recipes.length, ['рецепт', 'рецепта', 'рецептов'])}`
 }

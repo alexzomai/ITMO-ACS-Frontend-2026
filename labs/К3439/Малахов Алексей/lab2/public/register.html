@@ -12,10 +12,11 @@
   <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
+  <a class="skip-link" href="#main">Перейти к содержимому</a>
   <header>
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg" aria-label="Основное меню">
       <div class="container">
-        <a class="navbar-brand" href="index.html" data-icon="logo">Вкусная лента</a>
+        <a class="navbar-brand" href="index.html" data-icon="logo" aria-label="Вкусная лента, на главную">Вкусная лента</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Открыть меню">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -34,37 +35,37 @@
     </nav>
   </header>
 
-  <main class="container">
+  <main class="container" id="main" tabindex="-1">
     <div class="auth-card panel">
       <h1 class="h3 mb-1">Регистрация</h1>
       <p class="text-muted">Создайте аккаунт, чтобы публиковать свои рецепты.</p>
-      <div class="alert d-none" id="formAlert" role="alert"></div>
+      <div class="alert d-none" id="formAlert" role="alert" tabindex="-1"></div>
       <form id="registerForm" novalidate>
         <div class="mb-3">
           <label for="name" class="form-label">Имя</label>
-          <input type="text" class="form-control" id="name" name="name" autocomplete="name" required minlength="2">
-          <div class="invalid-feedback">Введите имя.</div>
+          <input type="text" class="form-control" id="name" aria-describedby="nameError" name="name" autocomplete="name" required minlength="2">
+          <div class="invalid-feedback" id="nameError">Введите имя.</div>
         </div>
         <div class="mb-3">
           <label for="email" class="form-label">Email</label>
-          <input type="email" class="form-control" id="email" name="email" autocomplete="email" required>
-          <div class="invalid-feedback">Введите корректный email.</div>
+          <input type="email" class="form-control" id="email" aria-describedby="emailError" name="email" autocomplete="email" required>
+          <div class="invalid-feedback" id="emailError">Введите корректный email.</div>
         </div>
         <div class="mb-3">
           <label for="password" class="form-label">Пароль</label>
-          <input type="password" class="form-control" id="password" name="password" autocomplete="new-password" required minlength="6" aria-describedby="passwordHelp">
+          <input type="password" class="form-control" id="password" name="password" autocomplete="new-password" required minlength="6" aria-describedby="passwordHelp passwordError">
           <div id="passwordHelp" class="form-text">Минимум 6 символов.</div>
-          <div class="invalid-feedback">Пароль слишком короткий.</div>
+          <div class="invalid-feedback" id="passwordError">Пароль слишком короткий.</div>
         </div>
         <div class="mb-3">
           <label for="passwordRepeat" class="form-label">Повторите пароль</label>
-          <input type="password" class="form-control" id="passwordRepeat" name="passwordRepeat" autocomplete="new-password" required data-no-trim>
-          <div class="invalid-feedback">Пароли не совпадают.</div>
+          <input type="password" class="form-control" id="passwordRepeat" aria-describedby="passwordRepeatError" name="passwordRepeat" autocomplete="new-password" required data-no-trim>
+          <div class="invalid-feedback" id="passwordRepeatError">Пароли не совпадают.</div>
         </div>
         <div class="form-check mb-3">
-          <input class="form-check-input" type="checkbox" id="agree" name="agree" required>
+          <input class="form-check-input" type="checkbox" id="agree" aria-describedby="agreeError" name="agree" required>
           <label class="form-check-label" for="agree">Согласен с правилами сервиса</label>
-          <div class="invalid-feedback">Нужно согласие с правилами.</div>
+          <div class="invalid-feedback" id="agreeError">Нужно согласие с правилами.</div>
         </div>
         <button type="submit" class="btn btn-primary w-100">Создать аккаунт</button>
       </form>

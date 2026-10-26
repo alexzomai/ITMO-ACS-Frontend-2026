@@ -19,6 +19,7 @@ function renderFollow() {
   const followed = user && follows.some((follow) => follow.userId === user.id)
   followButton.textContent = followed ? 'Вы подписаны' : 'Подписаться'
   followButton.classList.toggle('active', Boolean(followed))
+  followButton.setAttribute('aria-pressed', String(Boolean(followed)))
   document.getElementById('authorFollowers').textContent = plural(follows.length, ['подписчик', 'подписчика', 'подписчиков'])
 }
 
@@ -56,7 +57,7 @@ function renderComments() {
       const name = authorName(comment.userId)
       return `
         <li class="d-flex gap-3">
-          <span class="avatar">${escapeHtml(initials(name))}</span>
+          <span class="avatar" aria-hidden="true">${escapeHtml(initials(name))}</span>
           <div>
             <div class="fw-medium">${escapeHtml(name)} <span class="text-muted small fw-normal">${new Date(comment.date).toLocaleDateString('ru-RU')}</span></div>
             <p class="mb-0">${escapeHtml(comment.text)}</p>
@@ -116,7 +117,7 @@ function renderRecipe() {
   document.getElementById('steps').innerHTML = recipe.steps.map((step) => `<li>${escapeHtml(step)}</li>`).join('')
 
   document.getElementById('videoBlock').innerHTML = recipe.video
-    ? `<video class="recipe-video" controls preload="metadata" poster="${escapeHtml(recipe.image)}">
+    ? `<video class="recipe-video" controls preload="metadata" poster="${escapeHtml(recipe.image)}" aria-label="Видео: ${escapeHtml(recipe.title)}">
         <source src="${escapeHtml(recipe.video)}" type="video/webm">
         Ваш браузер не поддерживает видео.
       </video>`

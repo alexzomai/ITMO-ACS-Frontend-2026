@@ -6,6 +6,7 @@ const next = new URLSearchParams(location.search).get('next')
 function showAlert(type, text) {
   formAlert.className = `alert alert-${type}`
   formAlert.textContent = text
+  formAlert.focus()
 }
 
 function goNext() {

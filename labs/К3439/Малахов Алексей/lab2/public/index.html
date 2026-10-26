@@ -12,10 +12,11 @@
   <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
+  <a class="skip-link" href="#main">Перейти к содержимому</a>
   <header>
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg" aria-label="Основное меню">
       <div class="container">
-        <a class="navbar-brand" href="index.html" data-icon="logo">Вкусная лента</a>
+        <a class="navbar-brand" href="index.html" data-icon="logo" aria-label="Вкусная лента, на главную">Вкусная лента</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Открыть меню">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -34,11 +35,11 @@
     </nav>
   </header>
 
-  <main class="container py-4">
-    <section class="hero mb-5">
+  <main class="container py-4" id="main" tabindex="-1">
+    <section class="hero mb-5" aria-labelledby="heroTitle">
       <div class="row align-items-center g-4">
         <div class="col-lg-7">
-          <h1 class="mb-3">Делитесь рецептами и находите новые</h1>
+          <h1 class="mb-3" id="heroTitle">Делитесь рецептами и находите новые</h1>
           <p class="lead mb-4">Домашние рецепты с пошаговыми инструкциями, фото и видео от кулинаров, на которых можно подписаться.</p>
           <form class="d-flex flex-column flex-sm-row gap-2" action="search.html" role="search">
             <label for="heroSearch" class="visually-hidden">Поиск рецептов</label>
@@ -47,7 +48,7 @@
           </form>
         </div>
         <div class="col-lg-5">
-          <div class="d-flex flex-wrap gap-2" id="dishTypes"></div>
+          <nav class="d-flex flex-wrap gap-2" id="dishTypes" aria-label="Типы блюд"></nav>
         </div>
       </div>
     </section>

@@ -49,7 +49,12 @@ function checkBlank(field) {
 function validateForm(form) {
   form.querySelectorAll(TEXT_FIELDS).forEach(checkBlank)
   form.classList.add('was-validated')
-  return form.checkValidity()
+  form.querySelectorAll('input, select, textarea').forEach((field) => {
+    field.setAttribute('aria-invalid', String(!field.checkValidity()))
+  })
+  const valid = form.checkValidity()
+  if (!valid) form.querySelector(':invalid').focus()
+  return valid
 }
 
 const state = {
@@ -113,7 +118,7 @@ function recipeCard(recipe) {
 
 function likeButton(recipe, liked, size = '') {
   return `
-    <button type="button" class="btn ${size} btn-outline-secondary btn-like ${liked ? 'active' : ''}" data-id="${recipe.id}">
+    <button type="button" class="btn ${size} btn-outline-secondary btn-like ${liked ? 'active' : ''}" data-id="${recipe.id}" aria-pressed="${liked}" aria-label="Нравится «${escapeHtml(recipe.title)}», отметок: ${recipe.likes.length}">
       ${icon('heart')} <span class="like-count">${recipe.likes.length}</span>
     </button>
   `
@@ -121,7 +126,7 @@ function likeButton(recipe, liked, size = '') {
 
 function saveButton(id, saved, size = '') {
   return `
-    <button type="button" class="btn ${size} btn-outline-secondary btn-save ${saved ? 'active' : ''}" data-id="${id}">
+    <button type="button" class="btn ${size} btn-outline-secondary btn-save ${saved ? 'active' : ''}" data-id="${id}" aria-pressed="${saved}">
       ${icon('bookmark')} <span class="save-label">${saved ? 'Сохранён' : 'Сохранить'}</span>
     </button>
   `
@@ -190,6 +195,8 @@ async function toggleLike(button) {
     }
     document.querySelectorAll(`.btn-like[data-id="${recipe.id}"]`).forEach((item) => {
       item.classList.toggle('active', Boolean(myLike(recipe)))
+      item.setAttribute('aria-pressed', String(Boolean(myLike(recipe))))
+      item.setAttribute('aria-label', `Нравится «${recipe.title}», отметок: ${recipe.likes.length}`)
       item.querySelector('.like-count').textContent = recipe.likes.length
     })
   } catch (error) {
@@ -217,6 +224,7 @@ async function toggleSave(button) {
     }
     document.querySelectorAll(`.btn-save[data-id="${id}"]`).forEach((item) => {
       item.classList.toggle('active', state.saved.has(id))
+      item.setAttribute('aria-pressed', String(state.saved.has(id)))
       item.querySelector('.save-label').textContent = state.saved.has(id) ? 'Сохранён' : 'Сохранить'
     })
     document.dispatchEvent(new CustomEvent('saved-changed'))

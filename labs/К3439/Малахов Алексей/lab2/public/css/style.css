@@ -1,6 +1,6 @@
 :root {
-  --color-primary: #c8553d;
-  --color-primary-dark: #a8432e;
+  --color-primary: #b3452f;
+  --color-primary-dark: #943823;
   --color-accent: #f2a65a;
   --color-bg: #fffaf5;
   --color-surface: #ffffff;
@@ -181,8 +181,8 @@ a {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background-color: var(--color-accent);
-  color: #fff;
+  background-color: #fde3cf;
+  color: #8a3a22;
   font-weight: 700;
   display: inline-flex;
   align-items: center;
@@ -292,4 +292,39 @@ a {
 .nav-tabs .nav-link.active {
   color: var(--color-primary);
   font-weight: 500;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100px;
+  z-index: 2000;
+  padding: 0.5rem 1rem;
+  background-color: var(--color-primary);
+  color: #fff;
+  border-radius: 0 0 var(--radius) var(--radius);
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+a:focus-visible,
+button:focus-visible,
+.btn:focus-visible,
+.form-control:focus-visible,
+.form-select:focus-visible,
+.form-check-input:focus-visible {
+  outline: 3px solid var(--color-primary-dark);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .recipe-card {
+    transition: none;
+  }
+
+  .recipe-card:hover {
+    transform: none;
+  }
 }
