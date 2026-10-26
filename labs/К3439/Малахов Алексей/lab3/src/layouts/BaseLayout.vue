@@ -1,5 +1,5 @@
 <template>
-  <main class="container my-4">
+  <main id="main" class="container py-4" tabindex="-1">
     <slot />
   </main>
 </template>
