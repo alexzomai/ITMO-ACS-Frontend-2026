@@ -2,24 +2,32 @@
   <base-layout>
     <loading-state v-if="loading" />
     <div v-else-if="error" class="empty-state">
-      <h1 class="h3">{{ error.status === 404 ? 'Кулинар не найден' : error.message }}</h1>
+      <h1 class="h3">
+        {{ error.status === 404 ? 'Кулинар не найден' : error.message }}
+      </h1>
       <p><router-link :to="{ name: 'home' }">На главную</router-link></p>
     </div>
     <template v-else-if="data">
       <section class="panel mb-4">
         <div class="d-flex flex-column flex-md-row align-items-md-center gap-3">
-          <span class="avatar avatar-lg" aria-hidden="true">{{ initials(data.profile.name) }}</span>
+          <span class="avatar avatar-lg" aria-hidden="true">{{
+            initials(data.profile.name)
+          }}</span>
           <div class="flex-grow-1">
             <h1 class="h3 mb-1">{{ data.profile.name }}</h1>
             <p class="text-muted mb-1">
               @{{ data.profile.username
-              }}<template v-if="data.profile.city"> · {{ data.profile.city }}</template> ·
-              {{ plural(followers, ['подписчик', 'подписчика', 'подписчиков']) }} ·
+              }}<template v-if="data.profile.city"> · {{ data.profile.city }}</template>
+              · {{ plural(followers, ['подписчик', 'подписчика', 'подписчиков']) }} ·
               {{ plural(data.recipes.length, ['рецепт', 'рецепта', 'рецептов']) }}
             </p>
             <p class="mb-0">{{ data.profile.bio }}</p>
           </div>
-          <follow-button :following="following" :busy="followBusy" @toggle="toggleFollow" />
+          <follow-button
+            :following="following"
+            :busy="followBusy"
+            @toggle="toggleFollow"
+          />
         </div>
       </section>
 

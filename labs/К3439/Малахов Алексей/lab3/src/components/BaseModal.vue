@@ -11,7 +11,12 @@
       <div class="modal-content">
         <div class="modal-header">
           <h2 :id="`${id}-title`" class="modal-title h5">{{ title }}</h2>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть" />
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Закрыть"
+          />
         </div>
         <slot />
       </div>

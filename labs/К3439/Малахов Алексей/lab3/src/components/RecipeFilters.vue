@@ -62,7 +62,11 @@
       </select>
     </div>
 
-    <button type="button" class="btn btn-outline-secondary w-100" @click="$emit('reset')">
+    <button
+      type="button"
+      class="btn btn-outline-secondary w-100"
+      @click="$emit('reset')"
+    >
       Сбросить фильтры
     </button>
   </form>

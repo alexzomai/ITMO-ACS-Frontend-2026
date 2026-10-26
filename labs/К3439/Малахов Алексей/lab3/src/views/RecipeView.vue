@@ -2,9 +2,15 @@
   <base-layout>
     <nav aria-label="Навигационная цепочка">
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><router-link :to="{ name: 'home' }">Главная</router-link></li>
-        <li class="breadcrumb-item"><router-link :to="{ name: 'search' }">Рецепты</router-link></li>
-        <li class="breadcrumb-item active" aria-current="page">{{ recipe?.title || 'Рецепт' }}</li>
+        <li class="breadcrumb-item">
+          <router-link :to="{ name: 'home' }">Главная</router-link>
+        </li>
+        <li class="breadcrumb-item">
+          <router-link :to="{ name: 'search' }">Рецепты</router-link>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+          {{ recipe?.title || 'Рецепт' }}
+        </li>
       </ol>
     </nav>
 
@@ -37,9 +43,15 @@
           </div>
           <author-panel
             :name="nameOf(recipe.userId)"
-            :link="isMine ? { name: 'profile' } : { name: 'author', params: { id: recipe.userId } }"
+            :link="
+              isMine
+                ? { name: 'profile' }
+                : { name: 'author', params: { id: recipe.userId } }
+            "
             :subtitle="
-              isMine ? 'Ваш рецепт' : plural(followers, ['подписчик', 'подписчика', 'подписчиков'])
+              isMine
+                ? 'Ваш рецепт'
+                : plural(followers, ['подписчик', 'подписчика', 'подписчиков'])
             "
           >
             <follow-button
@@ -50,7 +62,11 @@
               @toggle="toggleFollow"
             />
           </author-panel>
-          <div class="d-flex flex-wrap gap-2" role="group" aria-label="Действия с рецептом">
+          <div
+            class="d-flex flex-wrap gap-2"
+            role="group"
+            aria-label="Действия с рецептом"
+          >
             <like-button :recipe="recipe" />
             <save-button :recipe-id="recipe.id" />
           </div>
@@ -68,7 +84,11 @@
                 class="form-check d-flex justify-content-between gap-2 py-2 border-bottom"
               >
                 <span>
-                  <input :id="`ingredient${index}`" class="form-check-input" type="checkbox" />
+                  <input
+                    :id="`ingredient${index}`"
+                    class="form-check-input"
+                    type="checkbox"
+                  />
                   <label class="form-check-label" :for="`ingredient${index}`">{{
                     item.name
                   }}</label>
@@ -99,7 +119,9 @@
               <source :src="recipe.video" type="video/webm" />
               Ваш браузер не поддерживает видео.
             </video>
-            <p v-else class="text-muted mb-0">Автор пока не добавил видео к этому рецепту.</p>
+            <p v-else class="text-muted mb-0">
+              Автор пока не добавил видео к этому рецепту.
+            </p>
           </section>
 
           <comment-section

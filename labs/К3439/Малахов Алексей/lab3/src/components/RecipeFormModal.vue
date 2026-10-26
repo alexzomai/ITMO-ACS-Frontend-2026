@@ -57,7 +57,9 @@
               <option value="">Выберите</option>
               <option v-for="item in DIFFICULTIES" :key="item">{{ item }}</option>
             </select>
-            <div id="recipeDifficultyError" class="invalid-feedback">Выберите сложность.</div>
+            <div id="recipeDifficultyError" class="invalid-feedback">
+              Выберите сложность.
+            </div>
           </div>
           <div class="col-sm-6">
             <label for="recipeTimeInput" class="form-label">Время, мин</label>
@@ -87,11 +89,15 @@
               required
               aria-describedby="recipeServingsError"
             />
-            <div id="recipeServingsError" class="invalid-feedback">От 1 до 20 порций.</div>
+            <div id="recipeServingsError" class="invalid-feedback">
+              От 1 до 20 порций.
+            </div>
           </div>
         </div>
         <div class="mb-3">
-          <label for="recipeDescriptionInput" class="form-label">Короткое описание</label>
+          <label for="recipeDescriptionInput" class="form-label"
+            >Короткое описание</label
+          >
           <input
             id="recipeDescriptionInput"
             v-model="draft.description"
@@ -126,14 +132,18 @@
             placeholder="Каждый шаг с новой строки"
             aria-describedby="recipeStepsError"
           />
-          <div id="recipeStepsError" class="invalid-feedback">Опишите хотя бы один шаг.</div>
+          <div id="recipeStepsError" class="invalid-feedback">
+            Опишите хотя бы один шаг.
+          </div>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
           Отмена
         </button>
-        <button type="submit" class="btn btn-primary" :disabled="sending">Опубликовать</button>
+        <button type="submit" class="btn btn-primary" :disabled="sending">
+          Опубликовать
+        </button>
       </div>
     </form>
   </base-modal>

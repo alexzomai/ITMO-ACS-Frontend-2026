@@ -50,7 +50,9 @@
               >
                 <app-icon name="user" /> {{ auth.user?.name || auth.user?.email }}
               </router-link>
-              <button type="button" class="btn btn-outline-primary" @click="logout">Выйти</button>
+              <button type="button" class="btn btn-outline-primary" @click="logout">
+                Выйти
+              </button>
             </template>
             <template v-else>
               <router-link class="btn btn-outline-primary" :to="{ name: 'login' }"

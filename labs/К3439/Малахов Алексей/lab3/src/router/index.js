@@ -34,7 +34,8 @@ const router = createRouter({
       meta: { title: 'Кулинар' },
       beforeEnter: (to) => {
         const auth = useAuthStore()
-        if (auth.isAuthenticated && auth.userId === Number(to.params.id)) return { name: 'profile' }
+        if (auth.isAuthenticated && auth.userId === Number(to.params.id))
+          return { name: 'profile' }
       },
     },
     {
@@ -74,7 +75,9 @@ router.beforeEach((to) => {
   }
   if (to.meta.guestOnly && auth.isAuthenticated) {
     const redirect = to.query.redirect
-    return typeof redirect === 'string' && redirect.startsWith('/') && !redirect.startsWith('//')
+    return typeof redirect === 'string' &&
+      redirect.startsWith('/') &&
+      !redirect.startsWith('//')
       ? redirect
       : { name: 'profile' }
   }

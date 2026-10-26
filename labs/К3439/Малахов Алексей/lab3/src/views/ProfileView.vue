@@ -5,17 +5,24 @@
     <template v-else-if="data">
       <section class="panel mb-4">
         <div class="d-flex flex-column flex-md-row align-items-md-center gap-3">
-          <span class="avatar avatar-lg" aria-hidden="true">{{ initials(data.profile.name) }}</span>
+          <span class="avatar avatar-lg" aria-hidden="true">{{
+            initials(data.profile.name)
+          }}</span>
           <div class="flex-grow-1">
             <h1 class="h3 mb-1">{{ data.profile.name }}</h1>
             <p class="text-muted mb-1">
-              @{{ data.profile.username }} · {{ data.profile.city || 'город не указан' }} ·
+              @{{ data.profile.username }} ·
+              {{ data.profile.city || 'город не указан' }} ·
               {{ auth.user?.email }}
             </p>
             <p class="mb-0">{{ data.profile.bio }}</p>
           </div>
           <div class="d-flex flex-wrap gap-2">
-            <button type="button" class="btn btn-outline-primary" @click="profileModal.show()">
+            <button
+              type="button"
+              class="btn btn-outline-primary"
+              @click="profileModal.show()"
+            >
               Редактировать профиль
             </button>
             <button
@@ -32,7 +39,9 @@
             plural(data.published.length, ['публикация', 'публикации', 'публикаций'])
           }}</span>
           <span>Сохранено: {{ savedRecipes.length }}</span>
-          <span>{{ plural(data.following.length, ['подписка', 'подписки', 'подписок']) }}</span>
+          <span>{{
+            plural(data.following.length, ['подписка', 'подписки', 'подписок'])
+          }}</span>
         </div>
       </section>
 
@@ -89,7 +98,11 @@
           <p v-if="data.following.length === 0" class="col-12 empty-state">
             Вы пока ни на кого не подписаны.
           </p>
-          <div v-for="follow in data.following" :key="follow.id" class="col-12 col-md-6 col-lg-4">
+          <div
+            v-for="follow in data.following"
+            :key="follow.id"
+            class="col-12 col-md-6 col-lg-4"
+          >
             <author-panel
               :name="nameOf(follow.authorId)"
               :link="{ name: 'author', params: { id: follow.authorId } }"
@@ -107,8 +120,15 @@
         </div>
       </div>
 
-      <profile-form-modal ref="profileModal" :profile="data.profile" @saved="onProfileSaved" />
-      <recipe-form-modal ref="recipeModal" @created="(recipe) => data.published.push(recipe)" />
+      <profile-form-modal
+        ref="profileModal"
+        :profile="data.profile"
+        @saved="onProfileSaved"
+      />
+      <recipe-form-modal
+        ref="recipeModal"
+        @created="(recipe) => data.published.push(recipe)"
+      />
     </template>
   </base-layout>
 </template>

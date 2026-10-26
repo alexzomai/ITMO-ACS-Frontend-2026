@@ -3,7 +3,13 @@
     <div class="auth-card panel">
       <h1 class="h3 mb-1">Регистрация</h1>
       <p class="text-muted">Создайте аккаунт, чтобы публиковать свои рецепты.</p>
-      <div v-if="serverError" ref="alert" class="alert alert-danger" role="alert" tabindex="-1">
+      <div
+        v-if="serverError"
+        ref="alert"
+        class="alert alert-danger"
+        role="alert"
+        tabindex="-1"
+      >
         {{ serverError }}
       </div>
       <form
@@ -53,7 +59,9 @@
             aria-describedby="passwordHelp passwordError"
           />
           <div id="passwordHelp" class="form-text">Минимум 6 символов.</div>
-          <div id="passwordError" class="invalid-feedback">Пароль слишком короткий.</div>
+          <div id="passwordError" class="invalid-feedback">
+            Пароль слишком короткий.
+          </div>
         </div>
         <div class="mb-3">
           <label for="passwordRepeat" class="form-label">Повторите пароль</label>
@@ -68,7 +76,9 @@
             data-no-trim
             aria-describedby="passwordRepeatError"
           />
-          <div id="passwordRepeatError" class="invalid-feedback">Пароли не совпадают.</div>
+          <div id="passwordRepeatError" class="invalid-feedback">
+            Пароли не совпадают.
+          </div>
         </div>
         <div class="form-check mb-3">
           <input
@@ -79,8 +89,12 @@
             required
             aria-describedby="agreeError"
           />
-          <label class="form-check-label" for="agree">Согласен с правилами сервиса</label>
-          <div id="agreeError" class="invalid-feedback">Нужно согласие с правилами.</div>
+          <label class="form-check-label" for="agree"
+            >Согласен с правилами сервиса</label
+          >
+          <div id="agreeError" class="invalid-feedback">
+            Нужно согласие с правилами.
+          </div>
         </div>
         <button type="submit" class="btn btn-primary w-100" :disabled="sending">
           Создать аккаунт
@@ -118,11 +132,15 @@ const serverError = ref('')
 const { validated, validate, onInput } = useFormValidation(form)
 
 watch([password, passwordRepeat], () => {
-  repeatInput.value?.setCustomValidity(password.value === passwordRepeat.value ? '' : 'mismatch')
+  repeatInput.value?.setCustomValidity(
+    password.value === passwordRepeat.value ? '' : 'mismatch',
+  )
 })
 
 async function submit() {
-  repeatInput.value.setCustomValidity(password.value === passwordRepeat.value ? '' : 'mismatch')
+  repeatInput.value.setCustomValidity(
+    password.value === passwordRepeat.value ? '' : 'mismatch',
+  )
   if (!validate()) return
   sending.value = true
   serverError.value = ''
@@ -134,7 +152,9 @@ async function submit() {
     })
     const redirect = route.query.redirect
     const safe =
-      typeof redirect === 'string' && redirect.startsWith('/') && !redirect.startsWith('//')
+      typeof redirect === 'string' &&
+      redirect.startsWith('/') &&
+      !redirect.startsWith('//')
     router.replace(safe ? redirect : { name: 'profile' })
   } catch (error) {
     serverError.value = error.message

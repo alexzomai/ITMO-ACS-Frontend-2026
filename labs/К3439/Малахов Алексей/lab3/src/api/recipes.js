@@ -8,7 +8,10 @@ class RecipesApi {
   }
 
   getOne = async (id) => {
-    return this.API({ url: `/recipes/${id}`, params: { _embed: ['likes', 'comments'] } })
+    return this.API({
+      url: `/recipes/${id}`,
+      params: { _embed: ['likes', 'comments'] },
+    })
   }
 
   create = async (data) => {

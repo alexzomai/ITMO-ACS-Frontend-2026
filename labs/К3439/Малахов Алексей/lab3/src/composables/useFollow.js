@@ -12,7 +12,9 @@ export function useFollow(authorId) {
   const follows = ref([])
   const busy = ref(false)
 
-  const mine = computed(() => follows.value.find((follow) => follow.userId === auth.userId))
+  const mine = computed(() =>
+    follows.value.find((follow) => follow.userId === auth.userId),
+  )
   const following = computed(() => auth.isAuthenticated && Boolean(mine.value))
   const followers = computed(() => follows.value.length)
 
@@ -29,7 +31,10 @@ export function useFollow(authorId) {
         await followsApi.remove(mine.value.id)
         follows.value = follows.value.filter((follow) => follow.id !== mine.value.id)
       } else {
-        const { data } = await followsApi.add({ userId: auth.userId, authorId: authorId.value })
+        const { data } = await followsApi.add({
+          userId: auth.userId,
+          authorId: authorId.value,
+        })
         follows.value = [...follows.value, data]
       }
     } catch (error) {

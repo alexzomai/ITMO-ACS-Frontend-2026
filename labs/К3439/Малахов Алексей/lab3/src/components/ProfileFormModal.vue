@@ -45,7 +45,9 @@
         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
           Отмена
         </button>
-        <button type="submit" class="btn btn-primary" :disabled="sending">Сохранить</button>
+        <button type="submit" class="btn btn-primary" :disabled="sending">
+          Сохранить
+        </button>
       </div>
     </form>
   </base-modal>

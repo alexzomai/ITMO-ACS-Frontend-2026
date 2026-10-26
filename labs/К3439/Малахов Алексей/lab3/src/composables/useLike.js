@@ -11,7 +11,9 @@ export function useLike(recipe) {
   const requireAuth = useRequireAuth()
   const busy = ref(false)
 
-  const myLike = computed(() => recipe.value.likes.find((like) => like.userId === auth.userId))
+  const myLike = computed(() =>
+    recipe.value.likes.find((like) => like.userId === auth.userId),
+  )
   const liked = computed(() => auth.isAuthenticated && Boolean(myLike.value))
   const count = computed(() => recipe.value.likes.length)
 
@@ -26,9 +28,14 @@ export function useLike(recipe) {
     try {
       if (myLike.value) {
         await likesApi.remove(myLike.value.id)
-        recipe.value.likes = recipe.value.likes.filter((like) => like.id !== myLike.value.id)
+        recipe.value.likes = recipe.value.likes.filter(
+          (like) => like.id !== myLike.value.id,
+        )
       } else {
-        const { data } = await likesApi.add({ recipeId: recipe.value.id, userId: auth.userId })
+        const { data } = await likesApi.add({
+          recipeId: recipe.value.id,
+          userId: auth.userId,
+        })
         recipe.value.likes = [...recipe.value.likes, data]
       }
     } catch (error) {

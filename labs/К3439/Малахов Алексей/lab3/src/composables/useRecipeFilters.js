@@ -38,7 +38,9 @@ export function useRecipeFilters() {
 
   const results = computed(() =>
     (data.value || [])
-      .filter((recipe) => filters.ingredients.every((item) => recipe.tags.includes(item)))
+      .filter((recipe) =>
+        filters.ingredients.every((item) => recipe.tags.includes(item)),
+      )
       .sort(SORTS[filters.sort]),
   )
 
@@ -64,7 +66,8 @@ export function useRecipeFilters() {
       const query = Object.fromEntries(
         Object.entries(value).filter(
           ([key, item]) =>
-            (Array.isArray(item) ? item.length : item) && !(key === 'sort' && item === 'popular'),
+            (Array.isArray(item) ? item.length : item) &&
+            !(key === 'sort' && item === 'popular'),
         ),
       )
       router.replace({ query })

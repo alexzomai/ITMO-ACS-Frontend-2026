@@ -5,10 +5,14 @@
         <div class="col-lg-7">
           <h1 id="heroTitle" class="mb-3">Делитесь рецептами и находите новые</h1>
           <p class="lead mb-4">
-            Домашние рецепты с пошаговыми инструкциями, фото и видео от кулинаров, на которых можно
-            подписаться.
+            Домашние рецепты с пошаговыми инструкциями, фото и видео от кулинаров, на
+            которых можно подписаться.
           </p>
-          <form class="d-flex flex-column flex-sm-row gap-2" role="search" @submit.prevent="search">
+          <form
+            class="d-flex flex-column flex-sm-row gap-2"
+            role="search"
+            @submit.prevent="search"
+          >
             <label for="heroSearch" class="visually-hidden">Поиск рецептов</label>
             <input
               id="heroSearch"
@@ -61,7 +65,9 @@
               <span class="d-block fw-medium">{{ author.name }}</span>
               <span class="d-block text-muted small">
                 {{ plural(author.recipes, ['рецепт', 'рецепта', 'рецептов']) }} ·
-                {{ plural(author.followers, ['подписчик', 'подписчика', 'подписчиков']) }}
+                {{
+                  plural(author.followers, ['подписчик', 'подписчика', 'подписчиков'])
+                }}
               </span>
             </span>
           </router-link>
@@ -94,7 +100,9 @@ const { data, loading, error, run } = useAsync(async () => {
 })
 
 const popular = computed(() =>
-  [...(data.value?.recipes || [])].sort((a, b) => b.likes.length - a.likes.length).slice(0, 6),
+  [...(data.value?.recipes || [])]
+    .sort((a, b) => b.likes.length - a.likes.length)
+    .slice(0, 6),
 )
 
 const authors = computed(() => {
@@ -102,14 +110,19 @@ const authors = computed(() => {
   return [...profiles.value.values()]
     .map((profile) => ({
       ...profile,
-      recipes: data.value.recipes.filter((recipe) => recipe.userId === profile.id).length,
-      followers: data.value.follows.filter((follow) => follow.authorId === profile.id).length,
+      recipes: data.value.recipes.filter((recipe) => recipe.userId === profile.id)
+        .length,
+      followers: data.value.follows.filter((follow) => follow.authorId === profile.id)
+        .length,
     }))
     .filter((author) => author.recipes > 0)
 })
 
 function search() {
-  router.push({ name: 'search', query: query.value.trim() ? { q: query.value.trim() } : {} })
+  router.push({
+    name: 'search',
+    query: query.value.trim() ? { q: query.value.trim() } : {},
+  })
 }
 
 onMounted(run)

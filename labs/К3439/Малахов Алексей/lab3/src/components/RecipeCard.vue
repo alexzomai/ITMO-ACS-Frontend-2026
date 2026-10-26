@@ -1,6 +1,11 @@
 <template>
   <article class="recipe-card card">
-    <img :src="recipe.image" class="recipe-card__img" :alt="recipe.title" loading="lazy" />
+    <img
+      :src="recipe.image"
+      class="recipe-card__img"
+      :alt="recipe.title"
+      loading="lazy"
+    />
     <div class="card-body d-flex flex-column gap-2">
       <div class="d-flex flex-wrap gap-2">
         <span class="badge badge-type">{{ recipe.type }}</span>

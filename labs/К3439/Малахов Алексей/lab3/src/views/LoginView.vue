@@ -2,8 +2,16 @@
   <base-layout>
     <div class="auth-card panel">
       <h1 class="h3 mb-1">Вход</h1>
-      <p class="text-muted">Войдите, чтобы сохранять рецепты и подписываться на кулинаров.</p>
-      <div v-if="serverError" ref="alert" class="alert alert-danger" role="alert" tabindex="-1">
+      <p class="text-muted">
+        Войдите, чтобы сохранять рецепты и подписываться на кулинаров.
+      </p>
+      <div
+        v-if="serverError"
+        ref="alert"
+        class="alert alert-danger"
+        role="alert"
+        tabindex="-1"
+      >
         {{ serverError }}
       </div>
       <form
@@ -38,14 +46,22 @@
             minlength="6"
             aria-describedby="passwordError"
           />
-          <div id="passwordError" class="invalid-feedback">Пароль не короче 6 символов.</div>
+          <div id="passwordError" class="invalid-feedback">
+            Пароль не короче 6 символов.
+          </div>
         </div>
-        <button type="submit" class="btn btn-primary w-100" :disabled="sending">Войти</button>
+        <button type="submit" class="btn btn-primary w-100" :disabled="sending">
+          Войти
+        </button>
       </form>
-      <p class="form-text mt-3 mb-0">Демо-аккаунт: alex@example.com, пароль recipe123</p>
+      <p class="form-text mt-3 mb-0">
+        Демо-аккаунт: alex@example.com, пароль recipe123
+      </p>
       <p class="text-center mt-3 mb-0">
         Нет аккаунта?
-        <router-link :to="{ name: 'register', query: route.query }">Зарегистрируйтесь</router-link>
+        <router-link :to="{ name: 'register', query: route.query }"
+          >Зарегистрируйтесь</router-link
+        >
       </p>
     </div>
   </base-layout>
@@ -78,7 +94,9 @@ async function submit() {
     await auth.login(email.value.trim(), password.value)
     const redirect = route.query.redirect
     const safe =
-      typeof redirect === 'string' && redirect.startsWith('/') && !redirect.startsWith('//')
+      typeof redirect === 'string' &&
+      redirect.startsWith('/') &&
+      !redirect.startsWith('//')
     router.replace(safe ? redirect : { name: 'profile' })
   } catch (error) {
     serverError.value = error.message
